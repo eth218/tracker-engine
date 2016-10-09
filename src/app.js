@@ -37,6 +37,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Routes
+app.use(express.static('./assets/'));
 app.use('/', require('./routes/slack.route'));
 
 const slapp = Slapp({
