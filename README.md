@@ -1,3 +1,3 @@
-## Watchman-Engine v0.0.1
+## Tracker-Engine v0.0.1
 
-Backend engine for handling Watchman requests from clients.
+Backend engine for handling Tracker requests from Slack.
