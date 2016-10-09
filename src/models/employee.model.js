@@ -19,6 +19,9 @@ const employeeSchema = new mongoose.Schema({
   reportsTo: {
     type: mongoose.Schema.Types.ObjectId,
   },
+  teamId: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
 }, {
   timestamps: true,
 });

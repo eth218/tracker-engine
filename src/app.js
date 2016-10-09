@@ -4,7 +4,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
 
-require('dotenv').config();
+require('dotenv').config({
+  path: '../.env',
+});
 
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 5000;
@@ -17,7 +19,6 @@ if (!(MONGO_URI)) {
 
 // Setting bluebird as the default mongoose promise implementation.
 mongoose.Promise = Promise;
-mongoose.connect(MONGO_URI);
 
 const app = express();
 
@@ -33,8 +34,14 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Routes
-// app.use('/', require('./routes/incident.route'));
+app.use('/', require('./routes/slack.route'));
 
-app.listen(PORT, () => {
-  console.log('Tracker Engine is running on port', PORT);
-});
+// Start the server after successful connection.
+mongoose.connect(MONGO_URI)
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log('Tracker Engine is running on port', PORT);
+    });
+  });
+
+

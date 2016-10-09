@@ -10,6 +10,7 @@ require('dotenv').config({
 });
 
 const MONGO_URI = process.env.MONGO_URI;
+const TEAM_ID = mongoose.Types.ObjectId('57f9bba5919489743a809e5e');
 
 // Checking presence of valid environmental variables.
 if (!(MONGO_URI)) {
@@ -42,6 +43,7 @@ function generateCTO() {
     title: 'CTO',
     department: 'Engineering',
     rank: 'Executive',
+    teamId: TEAM_ID,
   });
 
   return cto.save();
@@ -56,12 +58,14 @@ function generateManagers(reportToId, randomNames) {
     title: 'Senior Developer',
     department: 'Engineering',
     rank: 'Manager',
+    teamId: TEAM_ID,
   })).save(), (new Employee({
     firstName: 'Emilie',
     lastName: 'Hsieh',
     title: 'Senior Developer',
     department: 'Engineering',
     rank: 'Manager',
+    teamId: TEAM_ID,
   })).save());
 
   _.times(_.random(1, 3), () => {
@@ -74,6 +78,7 @@ function generateManagers(reportToId, randomNames) {
       department: 'Engineering',
       rank: 'Manager',
       reportTo: reportToId,
+      teamId: TEAM_ID,
     })).save());
   });
 
@@ -94,6 +99,7 @@ function generateEmployees(reportToId, randomNames) {
       department: 'Engineering',
       rank: 'Entry',
       reportTo: reportToId,
+      teamId: TEAM_ID,
     })).save());
   });
 
