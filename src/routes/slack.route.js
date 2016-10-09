@@ -9,8 +9,4 @@ router.get('/slack/oauth', (req, res) => {
     });
 });
 
-router.post('/slack/actions', (req, res) => {
-
-});
-
 module.exports = router;
