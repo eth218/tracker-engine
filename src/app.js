@@ -3,6 +3,9 @@ const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
+const Slapp = require('slapp')
+
+const SlackService = require('./services/slack.service');
 
 require('dotenv').config({
   path: '../.env',
@@ -35,6 +38,14 @@ app.use(cors());
 
 // Routes
 app.use('/', require('./routes/slack.route'));
+
+const slapp = Slapp({
+  verify_token: process.env.SLACK_VERIFY_TOKEN,
+  context: SlackService.slappContext,
+});
+require('./flows')(slapp);
+
+slapp.attachToExpress(app);
 
 // Start the server after successful connection.
 mongoose.connect(MONGO_URI)

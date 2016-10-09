@@ -1,32 +1,9 @@
-const router = require('express').Router();
 const rp = require('request-promise');
-const Slapp = require('slapp')
 
 const Team = require('../models/team.model');
 
 const SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID;
 const SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET;
-
-const slapp = Slapp({
-  verify_token: process.env.SLACK_VERIFY_TOKEN,
-  context(req, res, next) {
-    const meta = req.slapp.meta;
-
-    Team.findOne({
-      teamId: meta.team_id,
-    }).then((team) => {
-      req.slapp.meta = Object.assign(req.slapp.meta, {
-        app_token: team.accessToken,
-        bot_token: team.bot.accessToken,
-        bot_user_id: team.bot.userId,
-      });
-
-      next();
-    });
-  },
-});
-
-slapp.attachToExpress(router);
 
 function authorize(code) {
   const url = `https://slack.com/api/oauth.access?client_id=${SLACK_CLIENT_ID}&client_secret=${SLACK_CLIENT_SECRET}&code=${code}`;
@@ -56,6 +33,23 @@ function createTeam(response) {
   });
 }
 
+function slappContext(req, res, next) {
+  const meta = req.slapp.meta;
+
+  Team.findOne({
+    teamId: meta.team_id,
+  }).then((team) => {
+    req.slapp.meta = Object.assign(req.slapp.meta, {
+      app_token: team.accessToken,
+      bot_token: team.bot.accessToken,
+      bot_user_id: team.bot.userId,
+    });
+
+    next();
+  });
+}
+
 module.exports = {
   authorize,
+  slappContext,
 };
