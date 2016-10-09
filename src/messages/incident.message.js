@@ -3,7 +3,7 @@ const IncidentSubcategoryType = require('../enums/incident-subcategory-type');
 
 module.exports = {
   CATEGORY_SELECTION: {
-    text: 'I\'m sorry to hear that something happened to you. What type of report would you like to make?',
+    text: 'I can help you report bias that you\'ve experienced. I\'m sorry to hear that something happened to you. What type of report would you like to make?',
     attachments: [{
       fallback: 'Select a report type',
       callback_id: 'complaint_category_selection',
@@ -31,9 +31,9 @@ module.exports = {
     }],
   },
   EXCLUSION_SUBCATEGORY_SELECTION: {
-    text: 'I\'m sorry to hear that something happened to you. What type of report would you like to make?',
+    text: 'What type of exclusionary behavior happened?',
     attachments: [{
-      fallback: 'Select a report type',
+      fallback: 'Select an exclusion subcategory',
       callback_id: 'exclusion_subcategory_selection',
       actions: [{
         name: 'subcategory',
@@ -54,13 +54,13 @@ module.exports = {
     }],
   },
   GENDER_STEREOTYPE_SUBCATEGORY_SELECTION: {
-    text: 'I\'m sorry to hear that something happened to you. What type of report would you like to make?',
+    text: 'What type of gender stereotyping happened?',
     attachments: [{
-      fallback: 'Select a report type',
+      fallback: 'Select a gender stereotype subcategory',
       callback_id: 'gender_stereotype_subcategory_selection',
       actions: [{
         name: 'subcategory',
-        text: 'Gender Assumption',
+        text: 'Ability / Character',
         type: 'button',
         value: IncidentSubcategoryType.GENDER_STEREOTYPE_ASSUMPTION,
       }, {
@@ -77,9 +77,9 @@ module.exports = {
     }],
   },
   HARASSMENT_SUBCATEGORY_SELECTION: {
-    text: 'I\'m sorry to hear that something happened to you. What type of report would you like to make?',
+    text: 'What type of harassment happened?',
     attachments: [{
-      fallback: 'Select a report type',
+      fallback: 'Select a harassment subcategory',
       callback_id: 'harassment_subcategory_selection',
       actions: [{
         name: 'subcategory',
@@ -100,16 +100,16 @@ module.exports = {
     }],
   },
   COMPLAINT_TYPE_SUMMARY: {
-    text: 'You’re making a [complaintType] complaint.',
+    text: ':white_check_mark: You\’re making a report about [complaintType].',
   },
   OFFENDER_SELECTION: {
-    text: 'Who did this? Please tag their @username (they will not be notified).',
+    text: 'Tag the @username of whoever was involved. Don\'t worry - they will not be notified.',
   },
   INCIDENT_DESCRIPTION: {
-    text: 'Can you describe the incident in a few sentences? Enter `done` as a separate message when finished.',
+    text: 'Can you describe what happened in a few sentences? Enter `done` as a separate message when finished.',
   },
   ANONYMOUS_SELECTION: {
-    text: 'Would you like your name attached to this complaint? This is helpful if you\'d like management to address your concerns directly. If not, your information will be anonymized using your rank and department.',
+    text: 'Would you like your name attached to this report? This is helpful if you\'d like management to address your concerns directly. If not, your information will be anonymized using your rank and department.',
     attachments: [{
       fallback: 'Include your name on this report or not',
       callback_id: 'anonymous_selection',
@@ -125,6 +125,9 @@ module.exports = {
         value: 'yes',
       }],
     }],
+  },
+  ANONYMOUS_SELECTION_SUMMARY: {
+    text: ':white_check_mark: You\’re making this report [complaintType].',
   },
   INCIDENT_SUMMARY: {
     text: 'Ok @[username]. Here\'s the report I have from you:',
