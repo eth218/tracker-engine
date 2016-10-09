@@ -14,10 +14,13 @@ const incidentSchema = new mongoose.Schema({
     type: Boolean,
   },
   reporterId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
   },
   offenderId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  teamId: {
+    type: mongoose.Schema.Types.ObjectId,
   },
 }, {
   timestamps: true,

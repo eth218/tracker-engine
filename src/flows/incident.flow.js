@@ -2,19 +2,28 @@ const _ = require('lodash');
 const moment = require('moment');
 
 const IncidentCategoryType = require('../enums/incident-category-type');
-const IncidentSubcategoryType = require('../enums/incident-subcategory-type');
 const IncidentMessages = require('../messages/incident.message');
+const IncidentService = require('../services/incident.service');
 const SlackService = require('../services/slack.service');
 
 module.exports = (slapp) => {
   slapp.command('/tracker', /^report/, (msg) => {
     const state = {
-      timestamp: moment.utc(),
       username: msg.body.user_name,
     };
+    const user = msg.meta.user_id;
+    const token = msg.meta.bot_token || msg.meta.app_token;
 
-    msg.respond(IncidentMessages.CATEGORY_SELECTION)
-      .route('incidentCategorySelectionCallback', state);
+    SlackService.getUserInfo(token, user)
+      .then((userInfo) => {
+        state.reporter = {
+          firstName: userInfo.profile.first_name,
+          lastName: userInfo.profile.last_name,
+        };
+
+        msg.respond(IncidentMessages.CATEGORY_SELECTION)
+          .route('incidentCategorySelectionCallback', state);
+      });
   });
 
   slapp.route('incidentCategorySelectionCallback', (msg, state) => {
@@ -146,7 +155,14 @@ module.exports = (slapp) => {
       return;
     }
 
-
+    if (msg.body.actions[0].value === 'yes') {
+      IncidentService.createIncident(state)
+        .then(() => {
+          msg.respond('You have submitted the complaint.');
+        });
+    } else {
+      msg.respond('Cancelling the complaint.');
+    }
   });
 };
 
@@ -159,11 +175,11 @@ function offenderSelection (msg, state) {
   }, 2000);
 }
 
-function generateIncidentSummary(state) {
+function generateIncidentSummary (state) {
   const summary = _.cloneDeep(IncidentMessages.INCIDENT_SUMMARY);
 
   summary.text = summary.text.replace(/\[username\]/gi, state.username);
-  summary.fields = [{
+  summary.attachments[0].fields = [{
     title: 'Report Type',
     value: generateComplaintType(state),
   }, {
@@ -189,10 +205,10 @@ function generateComplaintTypeSummary (state) {
 }
 
 function generateComplaintType (state) {
-  let complaintType = state.category;
+  let complaintType = IncidentService.translateIncidentCategoryType(state.category);
 
   if (state.subcategory) {
-    complaintType += ` - ${state.subcategory}`;
+    complaintType += ` - ${IncidentService.translateIncidentSubcategoryType(state.subcategory)}`;
   }
 
   return complaintType;
