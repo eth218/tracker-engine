@@ -11,7 +11,7 @@ module.exports = {
         name: 'category',
         text: 'Exclusion',
         type: 'button',
-        value: IncidentCategoryType.EXLCUSION,
+        value: IncidentCategoryType.EXCLUSION,
       }, {
         name: 'category',
         text: 'Gender Stereotype',
