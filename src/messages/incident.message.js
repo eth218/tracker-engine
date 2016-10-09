@@ -99,4 +99,50 @@ module.exports = {
       }],
     }],
   },
+  COMPLAINT_TYPE_SUMMARY: {
+    text: 'You’re making a [complaintType] complaint.',
+  },
+  OFFENDER_SELECTION: {
+    text: 'Who did this? Please tag their @username (they will not be notified).',
+  },
+  INCIDENT_DESCRIPTION: {
+    text: 'Can you describe the incident in a few sentences? Enter `done` as a separate message when finished.',
+  },
+  ANONYMOUS_SELECTION: {
+    text: 'Would you like your name attached to this complaint? This is helpful if you\'d like management to address your concerns directly. If not, your information will be anonymized using your rank and department.',
+    attachments: [{
+      fallback: 'Include your name on this report or not',
+      callback_id: 'anonymous_selection',
+      actions: [{
+        name: 'anonymous',
+        text: 'Name Included',
+        type: 'button',
+        value: 'no',
+      }, {
+        name: 'anonymous',
+        text: 'Anonymized',
+        type: 'button',
+        value: 'yes',
+      }],
+    }],
+  },
+  INCIDENT_SUMMARY: {
+    text: 'Ok @[username]. Here\'s the report I have from you:',
+    attachments: [{
+      fallback: 'Report Summary',
+      callback_id: 'report_summary',
+      fields: [],
+      actions: [{
+        name: 'submit',
+        text: 'Submit',
+        type: 'button',
+        value: 'yes',
+      }, {
+        name: 'submit',
+        text: 'Cancel',
+        type: 'button',
+        value: 'no',
+      }],
+    }],
+  },
 };

@@ -1,4 +1,6 @@
+const Promise = require('bluebird');
 const rp = require('request-promise');
+const slack = require('slack');
 
 const Team = require('../models/team.model');
 
@@ -49,7 +51,23 @@ function slappContext(req, res, next) {
   });
 }
 
+function getUserInfo(token, user) {
+  return new Promise((resolve, reject) => {
+    slack.users.info({
+      token,
+      user,
+    }, (err, data) => {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve(data.user);
+    });
+  });
+}
+
 module.exports = {
   authorize,
   slappContext,
+  getUserInfo,
 };
